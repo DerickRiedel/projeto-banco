@@ -4,8 +4,8 @@ namespace AppBanco.Banco
 {
     public class InterfaceBanco : InterfaceBase
     {
-        private Banco banco = new Banco();
-        private int valorNaMao = 1000;
+        private Banco banco = new Banco(); // Instanciando um banco
+        private int valorNaMao = 1000; // Dinheiro na mão do indivíduo
 
         public void Executar(){
             bool executando = true;
@@ -38,12 +38,12 @@ namespace AppBanco.Banco
         public void Retirar(){
             bool executando = true;
             do{
-                banco.Atualizar();
+                banco.Atualizar(); // Atualizando o valor do banco
                 LimparTela();
                 Escrever("|Saldo disponível| "+Convert.ToString(banco.valorDisponivel)+" |");
                 Escrever("|Dinheiro na mão | "+Convert.ToString(valorNaMao)+" |");
                 Escrever("");
-                ListarCedulas();
+                ListarCedulas(); // Mostrar as cédulas disponíveis
                 Escrever("");
                 Escrever("Digite a cédula que deseja Retirar \n(Digite 0 se quiser voltar)");
 
@@ -74,7 +74,7 @@ namespace AppBanco.Banco
             }while(executando == true);
         }
 
-        public string[] ValoresCedulas(){
+        public string[] ValoresCedulas(){ // Pegar a quantidade de cada tipo de cédula
             string[] valores = new string[5];
             valores[0] = (Convert.ToString(banco.ListarCedulas()[0]));
             valores[1] = (Convert.ToString(banco.ListarCedulas()[1]));
@@ -101,10 +101,10 @@ namespace AppBanco.Banco
                 Escrever("");
         }
 
-        public void SacarCédulas(int valor){
+        public void SacarCédulas(int valor){ // Método que retira cédula do banco e, consequentemente, por ironia do destino, adiciona o valor à mão do indivíduo
             banco.Atualizar();
             var valorRetirado = banco.Retirar(valor);
-            if(valorRetirado == 0){
+            if(valorRetirado == 0){ // Caso a cédula não esteja disponível
                 AguardarTecla("Não foi possível realizar o saque");
             }else{
                 valorNaMao += valorRetirado;
@@ -127,8 +127,8 @@ namespace AppBanco.Banco
                     break;
                 }
                 var valor0 = LerInt("Cédulas de 02,00RS (qtd.) - (Digite 0 para pular)");
-                if(valor0 != 0)AdicionarCedulas(valor0,2);
-                
+                if(valor0 != 0)AdicionarCedulas(valor0,2); // Adicionar {valor0}(qtd.) cédulas de 2 reais
+                                            /* (Qtd,Valor) */
                 var valor1 = LerInt("Cédulas de 05,00RS (qtd.) - (Digite 0 para pular)");
                 if(valor1 != 0)AdicionarCedulas(valor1,5);
 
@@ -143,8 +143,8 @@ namespace AppBanco.Banco
             }while(executando == true);
         }
 
-        private void AdicionarCedulas(int qtd, int valor){
-            if(valor*qtd > valorNaMao){
+        private void AdicionarCedulas(int qtd, int valor){ // Adicionar objeto Cédula no banco
+            if(valor*qtd > valorNaMao){ // Caso o valor em cédulas seja maior que o valor na mão do indivíduo
                 LimparTela();
                 Escrever("|Dinheiro na mão         | "+Convert.ToString(valorNaMao));
                 Escrever("|Valor que quer Depositar| "+Convert.ToString(valor*qtd));
@@ -152,9 +152,9 @@ namespace AppBanco.Banco
 
                 AguardarTecla("Você é pobre, não tem esse dinheiro");
             }else{
-                for(int i = 0; i < qtd; i++){
-                    banco.Depositar(new Cedula(valor));
-                    valorNaMao -= valor;
+                for(int i = 0; i < qtd; i++){ // Para cada rodada, adicionar uma cédula no banco
+                    banco.Depositar(new Cedula(valor)); // Adicionar uma cédula com o valor passado como parâmetro
+                    valorNaMao -= valor; // Descontar do dinheiro na mão
                 }
             }
         }

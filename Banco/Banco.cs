@@ -4,21 +4,21 @@ namespace AppBanco.Banco
 {
     public class Banco
     {
-        public int valorDisponivel{get; private set;}
-        public List<Cedula> cedulasDisponiveis{get; private set;}
+        public int valorDisponivel{get; private set;} // Total de Verba no banco (Dinheiro)
+        public List<Cedula> cedulasDisponiveis{get; private set;} // Cédulas disponíveis para retirar
 
         public Banco(){
-            cedulasDisponiveis = new List<Cedula>();
+            cedulasDisponiveis = new List<Cedula>(); // Construtor do Banco
         }
 
-        public void Atualizar(){
+        public void Atualizar(){ // Atualizar o valor do dinheiro total ({valorDisponível}) do banco
             valorDisponivel = 0;
             foreach(var item in cedulasDisponiveis){
-                valorDisponivel += item.Valor;
+                valorDisponivel += item.Valor; // Para cada cédula no banco, pega o valor da cédula e adiciona no valorTotal
             }
         }
 
-        public int[] ListarCedulas(){
+        public int[] ListarCedulas(){ // Listar a quantidade de cada tipo de cédula
             var valores = new int[5];
             foreach(var item in cedulasDisponiveis){
                 if(item.Valor == 2)
@@ -35,17 +35,17 @@ namespace AppBanco.Banco
             return valores;
         }
 
-        public void Depositar(Cedula cedula){
+        public void Depositar(Cedula cedula){ // Adicionar cédula no banco
             cedulasDisponiveis.Add(cedula);
         }
 
-        public int Retirar(int valor){
-            var result = cedulasDisponiveis.Where(x => x.Valor == valor).FirstOrDefault();
+        public int Retirar(int valor){ // Retirar cédulas que contenham esse valor
+            var result = cedulasDisponiveis.Where(x => x.Valor == valor).FirstOrDefault(); // Achar cédulas desse valor
             if(result != null){
-                cedulasDisponiveis.Remove(result);
-                return valor;
+                cedulasDisponiveis.Remove(result); // Remover a cédula do banco
+                return valor; // Retornar o valor da cédula à ser retirado
             }else{
-                return 0;
+                return 0; // Se não, retornar um número que indica um erro (Cédula não disponível)
             }
         }
     }

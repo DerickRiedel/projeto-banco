@@ -8,7 +8,7 @@ namespace AppBanco.Banco
         }
 
         protected void EscreverSó(string mensagem){
-            Console.Write(mensagem);
+            Console.Write(mensagem); // Escrever uma linha sem quebra
         }
         
         protected string LerString(){
